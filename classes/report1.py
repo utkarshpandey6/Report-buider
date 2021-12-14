@@ -76,7 +76,9 @@ class Report():
         sowing_date = ''
         harvesting_date = ''
         age = ''
-        if location != 'National average':
+        print(location.lower())
+        if (location.rstrip().lstrip().lower() != "national average"):
+            print(location.lower() != 'national average')
             sowing_date = self.get_date_of_sowing(location)
             harvesting_date = self.get_date_of_harvesting(location)
             sowing_date = sowing_date.strftime("%d.%m.%Y")
@@ -98,7 +100,7 @@ class Report():
 
         type_1 = random.randint(0, len(location_texts) - 1)
         text = location_texts[type_1]
-        if location == 'National average':
+        if location.rstrip().lstrip().lower() == "national average":
             type_1 = random.randint(0, len(national) - 1)
             text = national[type_1]
         best_checks, best_check, best_entry, other_best_entries_list, type_2, best_check_value, best_entry_value = (

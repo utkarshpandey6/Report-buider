@@ -1,10 +1,12 @@
 from classes.report1 import Report as Report1
 from classes.report2 import Report as Report2
 import os
+from os.path import isfile, join
+from os import listdir
 
 
 def generateType1Reports():
-    report = Report1('file.xlsx')
+
     # report.print_all_data()
     # print(report.get_all_locations())
     # print(report.get_number_of_entries(include_check=True))
@@ -20,26 +22,35 @@ def generateType1Reports():
     # print(report.get_best_checks("Kalyani"))
     # print(report.generate_introduction())
     # print(report.generate_report_for("Kalyani"))
-    print("Reading File...")
-    locations = report.get_all_locations(include_national_average=True)
-    lines = []
+    file = open("output_type1.txt", "w")
 
-    lines.append((report.generate_introduction() + "\n"))
-    print("Introduction Completed")
-    print("Generating Report...")
-    for location in locations:
-        print("For location -> " + location)
-        lines.append((report.generate_report_for(location) + "\n"))
+    files = [f for f in listdir('./input_type1')
+             if isfile(join('./input_type1', f))]
 
-    print("Writing report to text document")
-    file = open("myfile.txt", "w")
-    file.writelines(lines)
+    print(files)
+    print("\n")
+    for rep in files:
+        report = Report1('./input_type1/' + rep)
+
+        print("Reading " + rep + "...")
+        locations = report.get_all_locations(include_national_average=True)
+        lines = []
+        lines.append("Report For File: " + rep + "\n")
+        lines.append((report.generate_introduction() + "\n"))
+        print("Introduction Completed")
+        print("Generating Report...")
+        for location in locations:
+            print("For location -> " + location)
+            lines.append((report.generate_report_for(location) + "\n"))
+        lines.append("\n\n")
+        print("Writing report to text document")
+
+        file.writelines(lines)
     file.close()
-    os.system('.\myfile.txt')
 
 
 def generateType2Reports():
-    report = Report2('file2.xlsx')
+    file = open("output_type2.txt", "w")
     # report.print_all_data()
     # print(report.get_all_locations())
     # print(report.get_number_of_entries(include_check=True))
@@ -57,35 +68,53 @@ def generateType2Reports():
     # print(report.generate_mean_report_for("Kalyani"))
     # print(report.generate_previous_report_for("National average"))
 
-    print("Reading File...")
-    locations = report.get_all_locations(include_national_average=True)
-    lines = []
+    files = [f for f in listdir('./input_type2')
+             if isfile(join('./input_type2', f))]
 
-    lines.append((report.generate_introduction() + "\n"))
-    print("Introduction Completed")
-    print("Generating Report...")
-    for location in locations:
-        print("For location -> " + location)
+    print(files)
+    print("\n")
+    for rep in files:
+        report = Report2('./input_type2/' + rep)
 
-        if location.lower() == "national average":
-            lines.append(
-                (report.generate_previous_report_for(location) + "\n"))
-            lines.append((report.generate_report_for(location) + "\n"))
-            lines.append((report.generate_mean_report_for(location) + "\n"))
-        else:
-            lines.append((report.generate_report_for(location) + "\n"))
-            lines.append((report.generate_mean_report_for(location) + "\n"))
+        print("Reading " + rep + "....")
+        locations = report.get_all_locations(include_national_average=True)
+        lines = []
+        lines.append("Report For File: " + rep + "\n")
+        lines.append((report.generate_introduction() + "\n"))
+        print("Introduction Completed")
+        print("Generating Report...")
+        for location in locations:
+            print("For location -> " + location)
 
-    print("Writing report to text document")
-    file = open("myfile_type2.txt", "w")
-    file.writelines(lines)
+            if location.lower() == "national average":
+                lines.append(
+                    (report.generate_previous_report_for(location) + "\n"))
+                lines.append((report.generate_report_for(location) + "\n"))
+                lines.append(
+                    (report.generate_mean_report_for(location) + "\n"))
+            else:
+                lines.append((report.generate_report_for(location) + "\n"))
+                lines.append(
+                    (report.generate_mean_report_for(location) + "\n"))
+
+        lines.append("\n\n")
+        print("Writing report to text document")
+        file.writelines(lines)
+        print("\n\n")
+
     file.close()
-    os.system('.\myfile_type2.txt')
 
 
 def main():
-    # generateType1Reports()
+    print("--------------Generating Report Type 1---------------")
+    print("Reading Files")
+    generateType1Reports()
+    print("--------------Generating Report Type 2---------------")
+    print("Reading Files")
     generateType2Reports()
+
+    print("Execution Completed. Press enter.....")
+    input()
 
 
 if __name__ == "__main__":

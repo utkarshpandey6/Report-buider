@@ -163,7 +163,7 @@ class Report():
         sowing_date = ''
         harvesting_date = ''
         age = ''
-        if location != 'National average':
+        if location.rstrip().lstrip().lower() != "national average":
             sowing_date = self.get_date_of_sowing(location)
             harvesting_date = self.get_date_of_harvesting(location)
             sowing_date = sowing_date.strftime("%d.%m.%Y")
@@ -185,7 +185,7 @@ class Report():
         year = self.years[self.get_index(location, self.locations)]
         type_1 = random.randint(0, len(location_texts) - 1)
         text = location_texts[type_1]
-        if location == 'National average':
+        if location.rstrip().lstrip().lower() == "national average":
             type_1 = random.randint(
                 0, len(national_type2_without_location) - 1)
             text = national_type2_without_location[type_1]
@@ -236,7 +236,7 @@ class Report():
 
         type_1 = random.randint(0, len(mean_entries_start) - 1)
         text = mean_entries_start[type_1]
-        if location == 'National average':
+        if location.rstrip().lstrip().lower() == "national average":
             type_1 = random.randint(
                 0, len(mean_entries_start_for_national_average) - 1)
             text = mean_entries_start_for_national_average[type_1]
@@ -296,7 +296,7 @@ class Report():
         year = self.previous_years[self.get_index(location, self.locations)]
         type_1 = random.randint(0, len(mean_entries_start) - 1)
         text = mean_entries_start[type_1]
-        if location == 'National average':
+        if location.rstrip().lstrip().lower() == "national average":
             type_1 = random.randint(
                 0, len(national_type2) - 1)
             text = national_type2[type_1]
@@ -535,7 +535,7 @@ class Report():
         if include_national_average == False:
             loc = []
             for i in self.locations:
-                if i.lower() != 'national average':
+                if i.rstrip().lstrip().lower() == "national average":
                     loc.append(i)
             return loc
         return self.locations
