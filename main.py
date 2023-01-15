@@ -30,9 +30,12 @@ def generateType1Reports():
     print(files)
     print("\n")
     for rep in files:
+        print("Reading " + rep + "...")
+        if rep[0] == ".":
+            continue
         report = Report1('./input_type1/' + rep)
 
-        print("Reading " + rep + "...")
+
         locations = report.get_all_locations(include_national_average=True)
         lines = []
         lines.append("Report For File: " + rep + "\n")
@@ -74,6 +77,8 @@ def generateType2Reports():
     print(files)
     print("\n")
     for rep in files:
+        if rep[0] == ".":
+            continue
         report = Report2('./input_type2/' + rep)
 
         print("Reading " + rep + "....")

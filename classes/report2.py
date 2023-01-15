@@ -48,6 +48,12 @@ class Report():
         self.sowing_date_index = len(self.file[self.file.columns[0]]) - 2
         self.harvesting_date_index = len(self.file[self.file.columns[0]]) - 1
 
+        for i in reversed(range(self.harvesting_date_index + 1)):
+
+            if str(self.file[self.file.columns[0]][i]) != "nan":
+                self.harvesting_date_index = i
+                break;
+
         text_sowing = self.file[self.file.columns[0]
                                 ][self.sowing_date_index].lower()
         text_harvesting = self.file[self.file.columns[0]
@@ -163,11 +169,16 @@ class Report():
         sowing_date = ''
         harvesting_date = ''
         age = ''
-        if location.rstrip().lstrip().lower() != "national average":
+        if (location.rstrip().lstrip().lower() != "national average" and location.rstrip().lstrip().lower() != "national average*"):
             sowing_date = self.get_date_of_sowing(location)
             harvesting_date = self.get_date_of_harvesting(location)
+            if str(type(harvesting_date)) == "<class 'str'>" :
+                harvesting_date = datetime.datetime.strptime(harvesting_date, '%m/%d/%Y').date()
+            if str(type(sowing_date)) == "<class 'str'>" :
+                sowing_date = datetime.datetime.strptime(sowing_date, '%m/%d/%Y').date()
             sowing_date = sowing_date.strftime("%d.%m.%Y")
             harvesting_date = harvesting_date.strftime("%d.%m.%Y")
+
             age = datetime.datetime.strptime(harvesting_date, "%d.%m.%Y") - \
                 datetime.datetime.strptime(sowing_date, "%d.%m.%Y")
             age = str(age.days) + " days"
@@ -185,7 +196,7 @@ class Report():
         year = self.years[self.get_index(location, self.locations)]
         type_1 = random.randint(0, len(location_texts) - 1)
         text = location_texts[type_1]
-        if location.rstrip().lstrip().lower() == "national average":
+        if location.rstrip().lstrip().lower() == "national average" or location.rstrip().lstrip().lower() == "national average*":
             type_1 = random.randint(
                 0, len(national_type2_without_location) - 1)
             text = national_type2_without_location[type_1]
